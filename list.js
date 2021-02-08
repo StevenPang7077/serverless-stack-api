@@ -7,11 +7,11 @@ export const main = handler(async (event, context) => {
     // 'KeyConditionExpression' defines the condition for the query
     // - 'userId = :userId': only return items with matching 'userId'
     //   partition key
-    KeyConditionExpression: "userid = :userid",
+    KeyConditionExpression: "userId = :userId",
     // 'ExpressionAttributeValues' defines the value in the condition
     // - ':userId': defines 'userId' to be the id of the author
     ExpressionAttributeValues: {
-      ":userid": "1,2,3",
+      ":userId": event.requestContext.identity.cognitoIdentityId,
     },
   };
 

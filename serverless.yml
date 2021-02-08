@@ -1,3 +1,11 @@
+# endpoints:
+#   POST - https://ia6p6j7u53.execute-api.us-east-1.amazonaws.com/prod/notes
+#   GET - https://ia6p6j7u53.execute-api.us-east-1.amazonaws.com/prod/notes/{id}
+#   GET - https://ia6p6j7u53.execute-api.us-east-1.amazonaws.com/prod/notes
+#   PUT - https://ia6p6j7u53.execute-api.us-east-1.amazonaws.com/prod/notes/{id}
+#   DELETE - https://ia6p6j7u53.execute-api.us-east-1.amazonaws.com/prod/notes/{id
+
+
 service: notes-api
 
 # Create an optimized package for our functions
@@ -13,7 +21,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   stage: prod
-  region: us-east-2
+  region: us-east-1
 
   # These environment variables are made available to our functions
   # under process.env.
@@ -38,18 +46,26 @@ functions:
   # Defines an HTTP API endpoint that calls the main function in create.js
   # - path: url path is /notes
   # - method: POST request
+  # - authorizer: authenticate using the AWS IAM role
   create:
     handler: create.main
     events:
       - http:
           path: notes
           method: post
+          authorizer: aws_iam
+
   get:
+    # Defines an HTTP API endpoint that calls the main function in get.js
+    # - path: url path is /notes/{id}
+    # - method: GET request
     handler: get.main
     events:
       - http:
           path: notes/{id}
           method: get
+          authorizer: aws_iam
+
   list:
     # Defines an HTTP API endpoint that calls the main function in list.js
     # - path: url path is /notes
@@ -59,6 +75,7 @@ functions:
       - http:
           path: notes
           method: get
+          authorizer: aws_iam
 
   update:
     # Defines an HTTP API endpoint that calls the main function in update.js
@@ -69,6 +86,7 @@ functions:
       - http:
           path: notes/{id}
           method: put
+          authorizer: aws_iam
 
   delete:
     # Defines an HTTP API endpoint that calls the main function in delete.js
@@ -79,3 +97,4 @@ functions:
       - http:
           path: notes/{id}
           method: delete
+          authorizer: aws_iam
